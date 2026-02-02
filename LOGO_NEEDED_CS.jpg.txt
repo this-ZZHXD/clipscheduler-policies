@@ -1,0 +1,14 @@
+Logo File Needed: CS.jpg
+
+Please create or upload a logo image file named "CS.jpg" to this directory.
+
+Recommended specifications:
+- Format: JPG or PNG
+- Size: 512x512 pixels (square)
+- Theme: Scheduling Tools
+- Colors: #4facfe to #00f2fe gradient
+- Style: Modern, professional
+
+This logo will be used in:
+- Website header (index.html)
+- OAuth callback page (callback.html)

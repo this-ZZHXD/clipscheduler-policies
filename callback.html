@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Authorization - ClipScheduler</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .callback-container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            height: 80px;
+            width: 80px;
+            border-radius: 15px;
+        }
+        
+        .loading {
+            display: none;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success {
+            display: none;
+        }
+        
+        .success.active {
+            display: block;
+        }
+        
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #10b981;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: white;
+        }
+        
+        .error {
+            display: none;
+        }
+        
+        .error.active {
+            display: block;
+        }
+        
+        .error-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #ef4444;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: white;
+        }
+        
+        h1 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        p {
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .info-box {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: #4a5568;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        
+        .scopes-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .scopes-list li {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #4facfe;
+        }
+        
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .button-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        
+        @media (max-width: 768px) {
+            .callback-container {
+                padding: 40px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="callback-container">
+        <div class="logo">
+            <img src="CS.jpg" alt="ClipScheduler Logo">
+        </div>
+        
+        <!-- Loading State -->
+        <div class="loading active" id="loadingState">
+            <div class="spinner"></div>
+            <h1>Processing Authorization...</h1>
+            <p>Please wait while we complete the TikTok authorization process.</p>
+        </div>
+        
+        <!-- Success State -->
+        <div class="success" id="successState">
+            <div class="checkmark">✓</div>
+            <h1>Authorization Successful!</h1>
+            <p>Your TikTok account has been successfully connected to ClipScheduler.</p>
+            
+            <div class="info-box">
+                <div class="info-label">Authorization Code:</div>
+                <div class="info-value" id="authCode">Loading...</div>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-label">Granted Permissions:</div>
+                <ul class="scopes-list">
+                    <li>✓ user.info.basic - Display your TikTok profile</li>
+                    <li>✓ video.upload - Upload videos to TikTok</li>
+                    <li>✓ video.publish - Publish videos to your account</li>
+                </ul>
+            </div>
+            
+            <p>You can now start publishing videos to TikTok through ClipScheduler!</p>
+            
+            <a href="index.html" class="button">Return to Dashboard</a>
+        </div>
+        
+        <!-- Error State -->
+        <div class="error" id="errorState">
+            <div class="error-icon">✕</div>
+            <h1>Authorization Failed</h1>
+            <p id="errorMessage">An error occurred during the authorization process.</p>
+            
+            <div class="info-box">
+                <div class="info-label">Error Details:</div>
+                <div class="info-value" id="errorDetails">Unknown error</div>
+            </div>
+            
+            <a href="index.html" class="button">Try Again</a>
+            <a href="index.html" class="button button-secondary">Return to Home</a>
+        </div>
+    </div>
+    
+    <script>
+        // Parse URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Simulate processing delay
+        setTimeout(function() {
+            var code = getUrlParameter('code');
+            var error = getUrlParameter('error');
+            var errorDescription = getUrlParameter('error_description');
+            var state = getUrlParameter('state');
+            
+            document.getElementById('loadingState').classList.remove('active');
+            
+            if (error) {
+                // Show error state
+                document.getElementById('errorState').classList.add('active');
+                document.getElementById('errorMessage').textContent = 
+                    errorDescription || 'The authorization was denied or an error occurred.';
+                document.getElementById('errorDetails').textContent = 
+                    error + (errorDescription ? ': ' + errorDescription : '');
+            } else if (code) {
+                // Show success state
+                document.getElementById('successState').classList.add('active');
+                // Truncate code for display (security)
+                var displayCode = code.length > 50 ? code.substring(0, 50) + '...' : code;
+                document.getElementById('authCode').textContent = displayCode;
+            } else {
+                // Invalid callback
+                document.getElementById('errorState').classList.add('active');
+                document.getElementById('errorMessage').textContent = 
+                    'Invalid callback - missing authorization code.';
+                document.getElementById('errorDetails').textContent = 
+                    'No authorization code or error parameter found in the URL.';
+            }
+        }, 1500); // 1.5 second delay
+    </script>
+</body>
+</html>
