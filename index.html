@@ -48,28 +48,28 @@
             border-radius: 10px;
         }
         
-        .logo h1 {
-            font-size: 24px;
+        .logo-text h1 {
+            font-size: 1.8rem;
             font-weight: 700;
         }
         
         .hero {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
-            padding: 100px 20px;
+            padding: 80px 20px;
             text-align: center;
         }
         
         .hero h2 {
-            font-size: 48px;
+            font-size: 2.5rem;
             margin-bottom: 20px;
             font-weight: 700;
         }
         
         .hero p {
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.9;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
         }
         
         .cta-button {
@@ -80,100 +80,113 @@
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 18px;
-            transition: transform 0.3s;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: none;
         }
         
         .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
         
-        section {
-            padding: 80px 20px;
+        .features {
+            padding: 60px 20px;
+            background: #f8f9fa;
         }
         
-        .section-title {
+        .features h2 {
             text-align: center;
-            font-size: 36px;
+            font-size: 2rem;
             margin-bottom: 50px;
             color: #2d3748;
         }
         
-        .features-grid {
+        .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
-            margin-bottom: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .feature-card {
             background: white;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
         
         .feature-card h3 {
-            color: #4facfe;
-            margin-bottom: 15px;
-            font-size: 22px;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+        
+        .feature-card p {
+            color: #718096;
+            line-height: 1.6;
+        }
+        
+        .how-it-works {
+            padding: 60px 20px;
+        }
+        
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: #2d3748;
         }
         
         .steps {
-            background: #f7fafc;
-        }
-        
-        .steps-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .step {
             text-align: center;
+            padding: 20px;
         }
         
         .step-number {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
             width: 60px;
             height: 60px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 1.5rem;
             font-weight: 700;
             margin: 0 auto 20px;
         }
         
         .step h3 {
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
             color: #2d3748;
         }
         
-        .about {
-            background: white;
-        }
-        
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .about-content p {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #4a5568;
-            margin-bottom: 20px;
+        .step p {
+            color: #718096;
         }
         
         .footer {
@@ -184,40 +197,34 @@
         }
         
         .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         
         .footer-links a {
             color: white;
             text-decoration: none;
-            margin: 0 15px;
-            opacity: 0.8;
             transition: opacity 0.3s;
         }
         
         .footer-links a:hover {
-            opacity: 1;
-        }
-        
-        .category-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-bottom: 20px;
+            opacity: 0.7;
         }
         
         @media (max-width: 768px) {
             .hero h2 {
-                font-size: 32px;
+                font-size: 1.8rem;
             }
             
-            .section-title {
-                font-size: 28px;
+            .hero p {
+                font-size: 1rem;
             }
             
-            .features-grid {
+            .feature-grid,
+            .steps {
                 grid-template-columns: 1fr;
             }
         }
@@ -229,7 +236,9 @@
             <div class="header-content">
                 <div class="logo">
                     <img src="CS.jpg" alt="ClipScheduler Logo">
-                    <h1>ClipScheduler</h1>
+                    <div class="logo-text">
+                        <h1>ClipScheduler</h1>
+                    </div>
                 </div>
             </div>
         </div>
@@ -237,80 +246,74 @@
 
     <section class="hero">
         <div class="container">
-            <span class="category-badge">Scheduling Tools</span>
             <h2>Master Your Content Calendar with Precision</h2>
-            <p>Advanced scheduling and calendar management for TikTok content creators</p>
-            <a href="#" class="cta-button">Get Started</a>
+            <p>Schedule, automate, and optimize your TikTok content strategy with powerful calendar-based planning</p>
+            <button class="cta-button" onclick="loginWithTikTok()">Get Started</button>
         </div>
     </section>
 
-    <section id="features">
+    <section class="features">
         <div class="container">
-            <h2 class="section-title">Features</h2>
-            <div class="features-grid">
+            <h2>Powerful Features for Content Creators</h2>
+            <div class="feature-grid">
                 <div class="feature-card">
+                    <div class="feature-icon">📅</div>
                     <h3>Visual Calendar</h3>
-                    <p>See your entire content schedule at a glance with calendar view</p>
+                    <p>See your entire content schedule at a glance with our intuitive calendar interface</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Smart Timing</h3>
-                    <p>AI-powered suggestions for optimal posting times based on your audience</p>
-                </div>
-                <div class="feature-card">
+                    <div class="feature-icon">📤</div>
                     <h3>Bulk Upload</h3>
-                    <p>Upload multiple videos at once and schedule them in advance</p>
+                    <p>Upload multiple videos at once and schedule them across different dates effortlessly</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Recurring Posts</h3>
-                    <p>Set up recurring content series with automatic scheduling</p>
+                    <div class="feature-icon">⏰</div>
+                    <h3>Smart Timing</h3>
+                    <p>AI-powered suggestions for optimal posting times based on your audience engagement</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Time Zone Support</h3>
-                    <p>Schedule posts for different time zones to reach global audiences</p>
+                    <div class="feature-icon">🔄</div>
+                    <h3>Auto-Publishing</h3>
+                    <p>Set it and forget it - your videos publish automatically at scheduled times</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Draft Management</h3>
-                    <p>Save video drafts and schedule them for future publication</p>
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Track performance metrics and optimize your content strategy with detailed insights</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Content Planning</h3>
+                    <p>Plan weeks or months ahead with drag-and-drop scheduling and content organization</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="steps">
+    <section class="how-it-works">
         <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps-container">
+            <h2>How It Works</h2>
+            <div class="steps">
                 <div class="step">
-                    <div class="step-number">01</div>
-                    <h3>Plan Calendar</h3>
-                    <p>Map out your content strategy on visual calendar</p>
+                    <div class="step-number">1</div>
+                    <h3>Connect TikTok</h3>
+                    <p>Securely link your TikTok account with one click</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">02</div>
-                    <h3>Batch Upload</h3>
-                    <p>Upload multiple videos for the month ahead</p>
+                    <div class="step-number">2</div>
+                    <h3>Upload & Schedule</h3>
+                    <p>Bulk upload your videos and assign publishing dates on the calendar</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">03</div>
-                    <h3>Set Schedule</h3>
-                    <p>Assign specific dates and times for each video</p>
+                    <div class="step-number">3</div>
+                    <h3>Customize Settings</h3>
+                    <p>Add captions, hashtags, and configure posting preferences</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">04</div>
-                    <h3>Auto-Publish</h3>
-                    <p>Videos post automatically at scheduled times</p>
+                    <div class="step-number">4</div>
+                    <h3>Sit Back & Relax</h3>
+                    <p>Watch as your content publishes automatically at the perfect times</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="about">
-        <div class="container">
-            <h2 class="section-title">About ClipScheduler</h2>
-            <div class="about-content">
-                <p>ClipScheduler is designed for creators, professionals, and teams who want to maximize their TikTok presence with powerful tools and seamless workflows.</p>
-                <p>Our platform integrates directly with TikTok's Content Posting API to provide you with the most reliable and efficient publishing experience possible.</p>
-                <p>Join thousands of users who trust ClipScheduler to manage their TikTok content strategy.</p>
             </div>
         </div>
     </section>
@@ -321,9 +324,64 @@
                 <a href="terms-of-service.html">Terms of Service</a>
                 <a href="privacy-policy.html">Privacy Policy</a>
             </div>
-            <p>&copy; 2026 ClipScheduler. All rights reserved.</p>
-            <p>Contact: ddd350682@gmail.com</p>
+            <p>&copy; 2024 ClipScheduler. All rights reserved.</p>
+            <p>Contact: support@clipschedulerpolicies.com</p>
         </div>
     </footer>
+
+    <script>
+        // ⚠️ 重要配置：填写你的 TikTok App 信息
+        const TIKTOK_CLIENT_KEY = 'YOUR_CLIENT_KEY_HERE';  // 👈 替换成你的 Client Key
+        const REDIRECT_URI = 'https://clipscheduler.aic.cloud/callback.html';
+        const SCOPES = 'user.info.basic,video.upload,video.publish';
+
+        // TikTok OAuth 登录函数
+        function loginWithTikTok() {
+            // 检查是否配置了 Client Key
+            if (TIKTOK_CLIENT_KEY === 'YOUR_CLIENT_KEY_HERE') {
+                alert('⚠️ 请先在代码中配置你的 TikTok Client Key！\n\n请编辑 index.html，将 TIKTOK_CLIENT_KEY 替换成你在 TikTok Developer Portal 获得的 Client Key。');
+                console.error('TikTok Client Key 未配置！请在代码中填写你的 Client Key。');
+                return;
+            }
+
+            // 生成随机 state 用于安全验证
+            const state = generateRandomState();
+            
+            // 将 state 保存到 sessionStorage，callback 时验证
+            sessionStorage.setItem('tiktok_oauth_state', state);
+            
+            // 构建 TikTok 授权 URL
+            const authUrl = 'https://www.tiktok.com/v2/auth/authorize/' +
+                '?client_key=' + encodeURIComponent(TIKTOK_CLIENT_KEY) +
+                '&scope=' + encodeURIComponent(SCOPES) +
+                '&response_type=code' +
+                '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
+                '&state=' + encodeURIComponent(state);
+            
+            console.log('跳转到 TikTok 授权页面:', authUrl);
+            
+            // 跳转到 TikTok 授权页面
+            window.location.href = authUrl;
+        }
+
+        // 生成随机 state 字符串（用于 OAuth 安全验证）
+        function generateRandomState() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let state = '';
+            for (let i = 0; i < 32; i++) {
+                state += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return state;
+        }
+
+        // 页面加载时的初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('ClipScheduler 已加载');
+            console.log('配置信息:');
+            console.log('- Client Key:', TIKTOK_CLIENT_KEY === 'YOUR_CLIENT_KEY_HERE' ? '⚠️ 未配置' : '✅ 已配置');
+            console.log('- Redirect URI:', REDIRECT_URI);
+            console.log('- Scopes:', SCOPES);
+        });
+    </script>
 </body>
 </html>
