@@ -92,6 +92,11 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
         
+        .cta-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
         .features {
             padding: 60px 20px;
             background: #f8f9fa;
@@ -213,6 +218,29 @@
         .footer-links a:hover {
             opacity: 0.7;
         }
+
+        .config-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .config-notice strong {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .config-notice code {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
         
         @media (max-width: 768px) {
             .hero h2 {
@@ -248,7 +276,12 @@
         <div class="container">
             <h2>Master Your Content Calendar with Precision</h2>
             <p>Schedule, automate, and optimize your TikTok content strategy with powerful calendar-based planning</p>
-            <button class="cta-button" onclick="loginWithTikTok()">Get Started</button>
+            <button class="cta-button" id="getStartedBtn" onclick="loginWithTikTok()">Get Started</button>
+            <div id="configNotice" class="config-notice" style="display: none;">
+                <strong>⚠️ Configuration Required</strong>
+                <p>Please configure your TikTok Client Key in the code before using the login feature.</p>
+                <p>Edit <code>TIKTOK_CLIENT_KEY</code> in the page source.</p>
+            </div>
         </div>
     </section>
 
@@ -330,27 +363,47 @@
     </footer>
 
     <script>
-        // ⚠️ 重要配置：填写你的 TikTok App 信息
-        const TIKTOK_CLIENT_KEY = 'YOUR_CLIENT_KEY_HERE';  // 👈 替换成你的 Client Key
-        const REDIRECT_URI = 'https://clipscheduler.aic.cloud/callback.html';
+        // ⚠️ IMPORTANT: Configure your TikTok Client Key here
+        // Get this from: https://developers.tiktok.com/
+        const TIKTOK_CLIENT_KEY = 'YOUR_CLIENT_KEY_HERE';  // 👈 Replace with your actual Client Key
+        
+        // Redirect URI - must match exactly what you configured in TikTok Developer Portal
+        const REDIRECT_URI = 'https://this-ZZHXD.github.io/clipscheduler-policies/callback.html';
+        
+        // Scopes - permissions we're requesting
         const SCOPES = 'user.info.basic,video.upload,video.publish';
 
-        // TikTok OAuth 登录函数
+        /**
+         * Initiate TikTok OAuth login flow
+         */
         function loginWithTikTok() {
-            // 检查是否配置了 Client Key
+            // Check if Client Key is configured
             if (TIKTOK_CLIENT_KEY === 'YOUR_CLIENT_KEY_HERE') {
-                alert('⚠️ 请先在代码中配置你的 TikTok Client Key！\n\n请编辑 index.html，将 TIKTOK_CLIENT_KEY 替换成你在 TikTok Developer Portal 获得的 Client Key。');
-                console.error('TikTok Client Key 未配置！请在代码中填写你的 Client Key。');
+                // Show configuration notice
+                const notice = document.getElementById('configNotice');
+                notice.style.display = 'block';
+                
+                // Scroll to notice
+                notice.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                console.error('❌ TikTok Client Key not configured!');
+                console.log('📝 Please follow these steps:');
+                console.log('1. Get your Client Key from TikTok Developer Portal');
+                console.log('2. Replace TIKTOK_CLIENT_KEY value in this file');
+                console.log('3. Upload the updated file to GitHub');
+                
                 return;
             }
 
-            // 生成随机 state 用于安全验证
+            console.log('🚀 Initiating TikTok OAuth flow...');
+            
+            // Generate random state for CSRF protection
             const state = generateRandomState();
             
-            // 将 state 保存到 sessionStorage，callback 时验证
+            // Save state to sessionStorage for verification in callback
             sessionStorage.setItem('tiktok_oauth_state', state);
             
-            // 构建 TikTok 授权 URL
+            // Build TikTok authorization URL
             const authUrl = 'https://www.tiktok.com/v2/auth/authorize/' +
                 '?client_key=' + encodeURIComponent(TIKTOK_CLIENT_KEY) +
                 '&scope=' + encodeURIComponent(SCOPES) +
@@ -358,13 +411,18 @@
                 '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
                 '&state=' + encodeURIComponent(state);
             
-            console.log('跳转到 TikTok 授权页面:', authUrl);
+            console.log('✅ Redirecting to TikTok authorization page...');
+            console.log('📍 Redirect URI:', REDIRECT_URI);
+            console.log('🔑 Scopes:', SCOPES);
             
-            // 跳转到 TikTok 授权页面
+            // Redirect to TikTok
             window.location.href = authUrl;
         }
 
-        // 生成随机 state 字符串（用于 OAuth 安全验证）
+        /**
+         * Generate random state string for CSRF protection
+         * @returns {string} Random state string
+         */
         function generateRandomState() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let state = '';
@@ -374,13 +432,59 @@
             return state;
         }
 
-        // 页面加载时的初始化
+        /**
+         * Check if user is already logged in
+         */
+        function checkLoginStatus() {
+            const accessToken = localStorage.getItem('tiktok_access_token');
+            const userInfo = localStorage.getItem('tiktok_user_info');
+            
+            if (accessToken && userInfo) {
+                console.log('✅ User is logged in');
+                const user = JSON.parse(userInfo);
+                console.log('👤 User:', user.display_name || user.username);
+                
+                // Update button text
+                const btn = document.getElementById('getStartedBtn');
+                if (btn) {
+                    btn.textContent = 'Open Dashboard';
+                    btn.onclick = function() {
+                        alert('Dashboard feature coming soon! For now, you can:\n\n' +
+                              '1. View your profile: ' + (user.display_name || user.username) + '\n' +
+                              '2. Access token is stored securely\n' +
+                              '3. Ready for video scheduling features');
+                    };
+                }
+            }
+        }
+
+        // Page load initialization
         window.addEventListener('DOMContentLoaded', function() {
-            console.log('ClipScheduler 已加载');
-            console.log('配置信息:');
-            console.log('- Client Key:', TIKTOK_CLIENT_KEY === 'YOUR_CLIENT_KEY_HERE' ? '⚠️ 未配置' : '✅ 已配置');
-            console.log('- Redirect URI:', REDIRECT_URI);
-            console.log('- Scopes:', SCOPES);
+            console.log('🎯 ClipScheduler initialized');
+            console.log('📋 Configuration:');
+            console.log('  Client Key:', TIKTOK_CLIENT_KEY === 'YOUR_CLIENT_KEY_HERE' ? '⚠️ Not configured' : '✅ Configured');
+            console.log('  Redirect URI:', REDIRECT_URI);
+            console.log('  Scopes:', SCOPES);
+            
+            // Check if user is already logged in
+            checkLoginStatus();
+            
+            // Check for error parameter (redirected back with error)
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            const errorDescription = urlParams.get('error_description');
+            
+            if (error) {
+                console.error('❌ OAuth Error:', error);
+                if (errorDescription) {
+                    console.error('📝 Description:', errorDescription);
+                }
+                
+                alert('Login failed: ' + (errorDescription || error) + '\n\nPlease try again or contact support.');
+                
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
         });
     </script>
 </body>

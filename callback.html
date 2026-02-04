@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Authorization - ClipScheduler</title>
+    <title>Authorization - ClipScheduler</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
@@ -20,35 +20,187 @@
             justify-content: center;
             padding: 20px;
         }
-        
-        .callback-container {
+
+        .container {
             background: white;
             border-radius: 20px;
-            padding: 60px;
+            padding: 40px;
             max-width: 600px;
             width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-        
+
         .logo {
+            text-align: center;
             margin-bottom: 30px;
         }
-        
+
         .logo img {
             height: 80px;
             width: 80px;
             border-radius: 15px;
+            margin-bottom: 15px;
         }
-        
+
+        .logo h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .status-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .status-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .status-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .status-message {
+            font-size: 1.1rem;
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .info-box h3 {
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid #4facfe;
+        }
+
+        .info-item-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .info-item-content {
+            flex: 1;
+        }
+
+        .info-item-label {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 3px;
+        }
+
+        .info-item-value {
+            font-size: 0.95rem;
+            color: #2d3748;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .code-box {
+            background: #1a202c;
+            color: #48bb78;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #4facfe;
+            border: 2px solid #4facfe;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+        }
+
+        .error-box {
+            background: #fff5f5;
+            border: 2px solid #fc8181;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .error-box h3 {
+            color: #c53030;
+            margin-bottom: 10px;
+        }
+
+        .error-box p {
+            color: #742a2a;
+            line-height: 1.6;
+        }
+
         .loading {
-            display: none;
+            text-align: center;
+            padding: 40px 0;
         }
-        
-        .loading.active {
-            display: block;
-        }
-        
+
         .spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #4facfe;
@@ -56,229 +208,316 @@
             width: 50px;
             height: 50px;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
+            margin: 0 auto 20px;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        .success {
-            display: none;
-        }
-        
-        .success.active {
-            display: block;
-        }
-        
-        .checkmark {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #10b981;
-            margin: 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            color: white;
-        }
-        
-        .error {
-            display: none;
-        }
-        
-        .error.active {
-            display: block;
-        }
-        
-        .error-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #ef4444;
-            margin: 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            color: white;
-        }
-        
-        h1 {
-            color: #2d3748;
-            margin-bottom: 15px;
-            font-size: 28px;
-        }
-        
-        p {
-            color: #4a5568;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        .info-box {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        
-        .info-label {
-            font-weight: 600;
-            color: #4facfe;
-            margin-bottom: 5px;
-        }
-        
-        .info-value {
-            color: #4a5568;
-            font-family: monospace;
-            font-size: 14px;
-            word-break: break-all;
-        }
-        
-        .scopes-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .scopes-list li {
-            padding: 8px;
-            margin: 5px 0;
-            background: white;
-            border-radius: 5px;
-            border-left: 3px solid #4facfe;
-        }
-        
-        .button {
-            display: inline-block;
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 10px;
-            transition: transform 0.3s;
-        }
-        
-        .button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .button-secondary {
-            background: #e2e8f0;
-            color: #2d3748;
-        }
-        
-        @media (max-width: 768px) {
-            .callback-container {
-                padding: 40px 20px;
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
             }
-            
-            h1 {
-                font-size: 24px;
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .note {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #f57c00;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="callback-container">
+    <div class="container">
         <div class="logo">
             <img src="CS.jpg" alt="ClipScheduler Logo">
+            <h1>ClipScheduler</h1>
         </div>
-        
-        <!-- Loading State -->
-        <div class="loading active" id="loadingState">
+
+        <div id="loadingState" class="loading">
             <div class="spinner"></div>
-            <h1>Processing Authorization...</h1>
-            <p>Please wait while we complete the TikTok authorization process.</p>
+            <p style="color: #718096;">Processing authorization...</p>
         </div>
-        
-        <!-- Success State -->
-        <div class="success" id="successState">
-            <div class="checkmark">✓</div>
-            <h1>Authorization Successful!</h1>
-            <p>Your TikTok account has been successfully connected to ClipScheduler.</p>
-            
+
+        <div id="successState" class="status-container" style="display: none;">
+            <div class="status-icon">✅</div>
+            <h2 class="status-title">Authorization Successful!</h2>
+            <p class="status-message">You have successfully connected your TikTok account to ClipScheduler.</p>
+
             <div class="info-box">
-                <div class="info-label">Authorization Code:</div>
-                <div class="info-value" id="authCode">Loading...</div>
+                <h3>🔑 Granted Permissions</h3>
+                <div class="info-item">
+                    <div class="info-item-icon">👤</div>
+                    <div class="info-item-content">
+                        <div class="info-item-label">user.info.basic</div>
+                        <div class="info-item-value">Access your profile information and display name</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-item-icon">📤</div>
+                    <div class="info-item-content">
+                        <div class="info-item-label">video.upload</div>
+                        <div class="info-item-value">Upload videos to your TikTok account</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-item-icon">📅</div>
+                    <div class="info-item-content">
+                        <div class="info-item-label">video.publish</div>
+                        <div class="info-item-value">Publish scheduled videos automatically</div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="info-box">
-                <div class="info-label">Granted Permissions:</div>
-                <ul class="scopes-list">
-                    <li>✓ user.info.basic - Display your TikTok profile</li>
-                    <li>✓ video.upload - Upload videos to TikTok</li>
-                    <li>✓ video.publish - Publish videos to your account</li>
-                </ul>
+
+            <div class="info-box" id="authCodeBox">
+                <h3>📋 Authorization Details</h3>
+                <div class="info-item">
+                    <div class="info-item-icon">🔐</div>
+                    <div class="info-item-content">
+                        <div class="info-item-label">Authorization Code</div>
+                        <div class="info-item-value" id="authCode">Loading...</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-item-icon">🎯</div>
+                    <div class="info-item-content">
+                        <div class="info-item-label">State Token</div>
+                        <div class="info-item-value" id="stateToken">Loading...</div>
+                    </div>
+                </div>
             </div>
-            
-            <p>You can now start publishing videos to TikTok through ClipScheduler!</p>
-            
-            <a href="index.html" class="button">Return to Dashboard</a>
+
+            <div class="note">
+                <strong>📝 Note:</strong> In a production environment, this authorization code would be exchanged for an access token on the server side. For demo purposes, the code is displayed here.
+            </div>
+
+            <div class="button-group">
+                <a href="index.html" class="btn btn-primary">
+                    🏠 Return to Home
+                </a>
+                <button onclick="clearSession()" class="btn btn-secondary">
+                    🔄 Clear Session
+                </button>
+            </div>
         </div>
-        
-        <!-- Error State -->
-        <div class="error" id="errorState">
-            <div class="error-icon">✕</div>
-            <h1>Authorization Failed</h1>
-            <p id="errorMessage">An error occurred during the authorization process.</p>
-            
-            <div class="info-box">
-                <div class="info-label">Error Details:</div>
-                <div class="info-value" id="errorDetails">Unknown error</div>
+
+        <div id="errorState" class="status-container" style="display: none;">
+            <div class="status-icon">❌</div>
+            <h2 class="status-title">Authorization Failed</h2>
+            <p class="status-message">There was a problem connecting your TikTok account.</p>
+
+            <div class="error-box" id="errorDetails">
+                <h3>Error Details</h3>
+                <p id="errorMessage">Unknown error</p>
             </div>
-            
-            <a href="index.html" class="button">Try Again</a>
-            <a href="index.html" class="button button-secondary">Return to Home</a>
+
+            <div class="button-group">
+                <a href="index.html" class="btn btn-primary">
+                    🔄 Try Again
+                </a>
+                <a href="index.html" class="btn btn-secondary">
+                    🏠 Return to Home
+                </a>
+            </div>
+        </div>
+
+        <div id="noParamsState" class="status-container" style="display: none;">
+            <div class="status-icon">ℹ️</div>
+            <h2 class="status-title">No Authorization Data</h2>
+            <p class="status-message">This page is used to handle TikTok OAuth callbacks. Please start the login process from the home page.</p>
+
+            <div class="info-box">
+                <h3>ℹ️ How It Works</h3>
+                <p style="color: #718096; line-height: 1.6;">
+                    When you click "Get Started" on the home page and authorize ClipScheduler with your TikTok account, 
+                    TikTok will redirect you back to this page with the necessary authorization information.
+                </p>
+            </div>
+
+            <div class="button-group">
+                <a href="index.html" class="btn btn-primary">
+                    🏠 Go to Home Page
+                </a>
+            </div>
         </div>
     </div>
-    
+
     <script>
-        // Parse URL parameters
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        /**
+         * Parse URL parameters
+         */
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                code: params.get('code'),
+                state: params.get('state'),
+                error: params.get('error'),
+                error_description: params.get('error_description'),
+                scopes: params.get('scopes')
+            };
         }
-        
-        // Simulate processing delay
-        setTimeout(function() {
-            var code = getUrlParameter('code');
-            var error = getUrlParameter('error');
-            var errorDescription = getUrlParameter('error_description');
-            var state = getUrlParameter('state');
+
+        /**
+         * Verify state token to prevent CSRF attacks
+         */
+        function verifyState(receivedState) {
+            const savedState = sessionStorage.getItem('tiktok_oauth_state');
             
-            document.getElementById('loadingState').classList.remove('active');
-            
-            if (error) {
-                // Show error state
-                document.getElementById('errorState').classList.add('active');
-                document.getElementById('errorMessage').textContent = 
-                    errorDescription || 'The authorization was denied or an error occurred.';
-                document.getElementById('errorDetails').textContent = 
-                    error + (errorDescription ? ': ' + errorDescription : '');
-            } else if (code) {
-                // Show success state
-                document.getElementById('successState').classList.add('active');
-                // Truncate code for display (security)
-                var displayCode = code.length > 50 ? code.substring(0, 50) + '...' : code;
-                document.getElementById('authCode').textContent = displayCode;
-            } else {
-                // Invalid callback
-                document.getElementById('errorState').classList.add('active');
-                document.getElementById('errorMessage').textContent = 
-                    'Invalid callback - missing authorization code.';
-                document.getElementById('errorDetails').textContent = 
-                    'No authorization code or error parameter found in the URL.';
+            if (!savedState) {
+                console.warn('⚠️ No saved state found in sessionStorage');
+                return false;
             }
-        }, 1500); // 1.5 second delay
+
+            if (receivedState !== savedState) {
+                console.error('❌ State mismatch! Possible CSRF attack');
+                console.log('Received:', receivedState);
+                console.log('Expected:', savedState);
+                return false;
+            }
+
+            console.log('✅ State verified successfully');
+            return true;
+        }
+
+        /**
+         * Handle successful authorization
+         */
+        function handleSuccess(params) {
+            console.log('✅ Authorization successful');
+            console.log('Authorization Code:', params.code);
+            console.log('State:', params.state);
+            console.log('Scopes:', params.scopes);
+
+            // Verify state
+            if (!verifyState(params.state)) {
+                handleError({
+                    error: 'state_mismatch',
+                    error_description: 'State verification failed. This could be a security issue.'
+                });
+                return;
+            }
+
+            // Display success state
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successState').style.display = 'block';
+
+            // Fill in authorization details
+            document.getElementById('authCode').textContent = params.code;
+            document.getElementById('stateToken').textContent = params.state;
+
+            // In a real application, you would:
+            // 1. Send the authorization code to your backend server
+            // 2. Backend exchanges code for access token using Client Secret
+            // 3. Backend returns the access token to frontend
+            // 4. Store access token securely
+
+            // For demo purposes, we'll just save the code
+            sessionStorage.setItem('tiktok_auth_code', params.code);
+            sessionStorage.setItem('tiktok_auth_scopes', params.scopes || 'user.info.basic,video.upload,video.publish');
+
+            // Clear the OAuth state
+            sessionStorage.removeItem('tiktok_oauth_state');
+
+            console.log('💾 Authorization code saved to sessionStorage');
+        }
+
+        /**
+         * Handle authorization error
+         */
+        function handleError(params) {
+            console.error('❌ Authorization failed');
+            console.error('Error:', params.error);
+            console.error('Description:', params.error_description);
+
+            // Display error state
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+
+            // Fill in error details
+            const errorMessage = params.error_description || params.error || 'Unknown error occurred';
+            document.getElementById('errorMessage').textContent = errorMessage;
+
+            // Clear any saved OAuth state
+            sessionStorage.removeItem('tiktok_oauth_state');
+        }
+
+        /**
+         * Handle no parameters (direct access to callback page)
+         */
+        function handleNoParams() {
+            console.log('ℹ️ No OAuth parameters found');
+
+            // Display info state
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('noParamsState').style.display = 'block';
+        }
+
+        /**
+         * Clear session data
+         */
+        function clearSession() {
+            sessionStorage.removeItem('tiktok_auth_code');
+            sessionStorage.removeItem('tiktok_auth_scopes');
+            sessionStorage.removeItem('tiktok_oauth_state');
+            localStorage.removeItem('tiktok_access_token');
+            localStorage.removeItem('tiktok_user_info');
+            
+            alert('Session cleared successfully!');
+            window.location.href = 'index.html';
+        }
+
+        /**
+         * Page initialization
+         */
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Callback page loaded');
+
+            // Get URL parameters
+            const params = getUrlParams();
+            console.log('📋 URL Parameters:', params);
+
+            // Simulate processing delay for better UX
+            setTimeout(function() {
+                if (params.error) {
+                    // Handle error
+                    handleError(params);
+                } else if (params.code) {
+                    // Handle success
+                    handleSuccess(params);
+                } else {
+                    // No parameters
+                    handleNoParams();
+                }
+            }, 800);
+        });
     </script>
 </body>
 </html>
