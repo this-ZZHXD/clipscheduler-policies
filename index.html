@@ -480,7 +480,7 @@
                 <a href="privacy-policy.html">Privacy Policy</a>
             </div>
             <p>&copy; 2024 ClipScheduler. All rights reserved.</p>
-            <p>Contact: support@clipschedulerpolicies.com</p>
+            <p>Contact: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9feceaefeff0edebdffcf3f6efecfcf7fafbeaf3faedeff0f3f6fcf6faecb1fcf0f2">[email&#160;protected]</a></p>
         </div>
     </footer>
 
@@ -533,7 +533,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         console.log('🎬 ClipScheduler Demo Mode - Mock OAuth Flow');
         console.log('📋 This version simulates the TikTok OAuth flow for demo recording');
 
@@ -562,23 +562,26 @@
         }
 
         /**
-         * Simulate authorization approval and redirect to callback
+         * Simulate authorization approval and redirect to dashboard
          */
         function allowAuth() {
             console.log('✅ User approved authorization');
-            console.log('🔄 Redirecting to callback page...');
+            console.log('🔄 Redirecting to dashboard...');
             
             // Hide the overlay
             const overlay = document.getElementById('mockAuthOverlay');
             overlay.style.display = 'none';
             
-            // Simulate redirect to callback page with mock parameters
-            const mockCode = 'demo_authorization_code_' + Date.now();
-            const mockState = 'demo_state_token_12345';
-            const mockScopes = 'user.info.basic,video.upload,video.publish';
+            // Save authorization info to localStorage for dashboard
+            localStorage.setItem('tiktok_authorized', 'true');
+            localStorage.setItem('tiktok_user', JSON.stringify({
+                username: 'demo_creator',
+                display_name: 'Demo Creator',
+                scopes: ['user.info.basic', 'video.upload', 'video.publish']
+            }));
             
-            // Redirect to callback page with demo parameters
-            window.location.href = `callback.html?code=${mockCode}&state=${mockState}&scopes=${mockScopes}`;
+            // Redirect directly to dashboard
+            window.location.href = 'dashboard.html';
         }
 
         // Close modal when clicking outside
@@ -599,10 +602,3 @@
         });
 
         // Page load
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('🎯 Demo mode initialized');
-            console.log('📝 Click "Get Started" to see simulated OAuth flow');
-        });
-    </script>
-</body>
-</html>

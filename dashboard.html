@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - ClipScheduler</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: #f5f7fa;
             color: #333;
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
@@ -66,11 +61,21 @@
             font-size: 1.2rem;
         }
 
-        /* Main Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 30px 20px;
+        }
+
+        .demo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .welcome-banner {
@@ -81,18 +86,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .welcome-banner h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #2d3748;
-        }
-
-        .welcome-banner p {
-            color: #718096;
-            font-size: 1.1rem;
-        }
-
-        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -108,28 +101,13 @@
             border-left: 4px solid #4facfe;
         }
 
-        .stat-card h3 {
-            font-size: 0.9rem;
-            color: #718096;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
         .stat-value {
             font-size: 2rem;
             font-weight: 700;
             color: #2d3748;
-            margin-bottom: 5px;
         }
 
-        .stat-change {
-            font-size: 0.85rem;
-            color: #48bb78;
-        }
-
-        /* Calendar Section */
-        .calendar-section {
+        .section {
             background: white;
             border-radius: 15px;
             padding: 30px;
@@ -142,11 +120,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
-        }
-
-        .section-header h2 {
-            font-size: 1.5rem;
-            color: #2d3748;
         }
 
         .btn {
@@ -171,7 +144,7 @@
             box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
         }
 
-        /* Calendar Grid */
+        /* Calendar */
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -184,7 +157,6 @@
             font-weight: 600;
             color: #718096;
             padding: 10px;
-            font-size: 0.9rem;
         }
 
         .calendar-day {
@@ -192,10 +164,10 @@
             border: 2px solid #e2e8f0;
             border-radius: 8px;
             padding: 10px;
-            position: relative;
             cursor: pointer;
             transition: all 0.3s;
             background: white;
+            position: relative;
         }
 
         .calendar-day:hover {
@@ -206,12 +178,6 @@
         .calendar-day.has-video {
             background: linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%);
             border-color: #4facfe;
-        }
-
-        .day-number {
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 5px;
         }
 
         .video-count {
@@ -230,40 +196,106 @@
             font-weight: 700;
         }
 
-        /* Upload Section */
-        .upload-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        /* Upload Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            animation: fadeIn 0.3s;
         }
 
-        .upload-zone {
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .file-upload {
             border: 3px dashed #cbd5e0;
             border-radius: 12px;
-            padding: 60px 30px;
+            padding: 40px 20px;
             text-align: center;
-            background: #f7fafc;
             cursor: pointer;
             transition: all 0.3s;
+            background: #f7fafc;
         }
 
-        .upload-zone:hover {
+        .file-upload:hover {
             border-color: #4facfe;
             background: #edf2f7;
         }
 
-        .upload-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
+        .file-upload.has-file {
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
         }
 
         /* Video List */
-        .video-list {
-            margin-top: 30px;
-        }
-
         .video-item {
             background: #f7fafc;
             border-radius: 10px;
@@ -313,84 +345,24 @@
             color: #2c5282;
         }
 
-        .status-published {
-            background: #c6f6d5;
-            color: #22543d;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        /* Scopes Display */
-        .scopes-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .scope-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 20px;
-            background: #f7fafc;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid #4facfe;
-        }
-
-        .scope-icon {
-            font-size: 2rem;
-            flex-shrink: 0;
-        }
-
-        .scope-content h3 {
-            color: #2d3748;
-            margin-bottom: 5px;
-        }
-
-        .scope-content p {
-            color: #718096;
-            line-height: 1.5;
-        }
-
-        .usage-example {
-            background: #edf2f7;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            color: #2d3748;
-        }
-
-        /* Demo Mode Banner */
-        .demo-banner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .demo-banner-icon {
-            font-size: 2rem;
-        }
-
-        .demo-banner-content h3 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        .demo-banner-content p {
-            opacity: 0.9;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="logo">
             <div class="logo-icon">📅</div>
@@ -405,203 +377,312 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Demo Mode Banner -->
         <div class="demo-banner">
-            <div class="demo-banner-icon">🎬</div>
-            <div class="demo-banner-content">
+            <div style="font-size: 2rem;">🎬</div>
+            <div>
                 <h3>Demo Mode - Sandbox Environment</h3>
                 <p>This demonstration uses TikTok's Sandbox environment. Videos can only be published as PRIVATE during sandbox testing.</p>
             </div>
         </div>
 
-        <!-- Welcome Banner -->
         <div class="welcome-banner">
             <h1>Welcome back! 👋</h1>
             <p>Here's your content schedule overview</p>
         </div>
 
-        <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>Videos Scheduled</h3>
-                <div class="stat-value">12</div>
-                <div class="stat-change">↑ 3 this week</div>
+                <h3 style="font-size: 0.9rem; color: #718096; margin-bottom: 10px;">VIDEOS SCHEDULED</h3>
+                <div class="stat-value" id="statScheduled">0</div>
             </div>
             <div class="stat-card">
-                <h3>Published This Month</h3>
+                <h3 style="font-size: 0.9rem; color: #718096; margin-bottom: 10px;">PUBLISHED THIS MONTH</h3>
                 <div class="stat-value">24</div>
-                <div class="stat-change">↑ 15% from last month</div>
             </div>
             <div class="stat-card">
-                <h3>Pending Upload</h3>
+                <h3 style="font-size: 0.9rem; color: #718096; margin-bottom: 10px;">PENDING UPLOAD</h3>
                 <div class="stat-value">5</div>
-                <div class="stat-change">Ready to schedule</div>
             </div>
             <div class="stat-card">
-                <h3>Total Videos</h3>
+                <h3 style="font-size: 0.9rem; color: #718096; margin-bottom: 10px;">TOTAL VIDEOS</h3>
                 <div class="stat-value">87</div>
-                <div class="stat-change">All time</div>
             </div>
         </div>
 
-        <!-- API Scopes Section -->
-        <div class="scopes-section">
-            <div class="section-header">
-                <h2>🔑 TikTok API Permissions</h2>
-            </div>
-            <div class="scope-item">
-                <div class="scope-icon">👤</div>
-                <div class="scope-content">
-                    <h3>user.info.basic</h3>
-                    <p>Access your profile information and display name</p>
-                    <div class="usage-example">
-                        Used to: Display "@demo_creator" in the header and personalize your dashboard
-                    </div>
-                </div>
-            </div>
-            <div class="scope-item">
-                <div class="scope-icon">📤</div>
-                <div class="scope-content">
-                    <h3>video.upload</h3>
-                    <p>Upload videos to your TikTok account</p>
-                    <div class="usage-example">
-                        Used to: Store scheduled videos on TikTok servers awaiting publication
-                    </div>
-                </div>
-            </div>
-            <div class="scope-item">
-                <div class="scope-icon">📅</div>
-                <div class="scope-content">
-                    <h3>video.publish</h3>
-                    <p>Publish scheduled videos automatically at preset times</p>
-                    <div class="usage-example">
-                        Used to: Automatically post queued videos to your TikTok account at scheduled times
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Calendar Section -->
-        <div class="calendar-section">
+        <div class="section">
             <div class="section-header">
                 <h2>📅 Content Calendar - February 2024</h2>
-                <button class="btn btn-primary" onclick="alert('Upload feature - Would open upload dialog')">
-                    📤 Upload Videos
+                <button class="btn btn-primary" onclick="openUploadModal()">
+                    📤 Upload & Schedule Video
                 </button>
             </div>
             
-            <div class="calendar">
-                <!-- Day Headers -->
-                <div class="calendar-day-header">Sun</div>
-                <div class="calendar-day-header">Mon</div>
-                <div class="calendar-day-header">Tue</div>
-                <div class="calendar-day-header">Wed</div>
-                <div class="calendar-day-header">Thu</div>
-                <div class="calendar-day-header">Fri</div>
-                <div class="calendar-day-header">Sat</div>
-                
-                <!-- Calendar Days -->
-                <div class="calendar-day"><div class="day-number">28</div></div>
-                <div class="calendar-day"><div class="day-number">29</div></div>
-                <div class="calendar-day"><div class="day-number">30</div></div>
-                <div class="calendar-day"><div class="day-number">31</div></div>
-                <div class="calendar-day has-video">
-                    <div class="day-number">1</div>
-                    <div class="video-count">2</div>
-                </div>
-                <div class="calendar-day"><div class="day-number">2</div></div>
-                <div class="calendar-day"><div class="day-number">3</div></div>
-                
-                <div class="calendar-day has-video">
-                    <div class="day-number">4</div>
-                    <div class="video-count">1</div>
-                </div>
-                <div class="calendar-day has-video">
-                    <div class="day-number">5</div>
-                    <div class="video-count">3</div>
-                </div>
-                <div class="calendar-day"><div class="day-number">6</div></div>
-                <div class="calendar-day has-video">
-                    <div class="day-number">7</div>
-                    <div class="video-count">1</div>
-                </div>
-                <div class="calendar-day"><div class="day-number">8</div></div>
-                <div class="calendar-day"><div class="day-number">9</div></div>
-                <div class="calendar-day has-video">
-                    <div class="day-number">10</div>
-                    <div class="video-count">2</div>
-                </div>
-            </div>
+            <div class="calendar" id="calendar"></div>
         </div>
 
-        <!-- Upload Section -->
-        <div class="upload-section">
+        <div class="section">
             <div class="section-header">
-                <h2>📤 Bulk Upload & Schedule</h2>
+                <h2>📋 Scheduled Videos</h2>
             </div>
-            
-            <div class="upload-zone" onclick="alert('Bulk upload - Would open file picker for multiple videos')">
-                <div class="upload-icon">☁️</div>
-                <h3>Drag & Drop Videos Here</h3>
-                <p style="color: #718096; margin-top: 10px;">or click to browse (supports bulk upload)</p>
+            <div id="videoList"></div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>📤 Upload & Schedule Video</h2>
+                <button onclick="closeUploadModal()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
             </div>
-
-            <!-- Uploaded Videos List -->
-            <div class="video-list">
-                <h3 style="margin-bottom: 20px; color: #2d3748;">Recently Scheduled</h3>
-                
-                <div class="video-item">
-                    <div class="video-thumbnail">🎥</div>
-                    <div class="video-info">
-                        <div class="video-title">Morning Routine Tips</div>
-                        <div class="video-meta">Scheduled: Feb 5, 2024 at 8:00 AM</div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Select Video File</label>
+                    <div class="file-upload" id="fileUpload" onclick="document.getElementById('fileInput').click()">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">☁️</div>
+                        <div id="fileUploadText"><strong>Click to select video</strong> or drag and drop</div>
+                        <input type="file" id="fileInput" accept="video/*" style="display: none;" onchange="handleFileSelect(event)">
                     </div>
-                    <div class="video-status status-scheduled">Scheduled</div>
                 </div>
 
-                <div class="video-item">
-                    <div class="video-thumbnail">🎬</div>
-                    <div class="video-info">
-                        <div class="video-title">Cooking Tutorial: Easy Pasta</div>
-                        <div class="video-meta">Scheduled: Feb 7, 2024 at 12:00 PM</div>
-                    </div>
-                    <div class="video-status status-scheduled">Scheduled</div>
+                <div class="form-group">
+                    <label>Video Title</label>
+                    <input type="text" class="form-control" id="videoTitle" placeholder="Enter video title">
                 </div>
 
-                <div class="video-item">
-                    <div class="video-thumbnail">📱</div>
-                    <div class="video-info">
-                        <div class="video-title">Tech Review: Latest Gadget</div>
-                        <div class="video-meta">Published: Feb 1, 2024 at 6:00 PM</div>
-                    </div>
-                    <div class="video-status status-published">Published</div>
+                <div class="form-group">
+                    <label>Description (Optional)</label>
+                    <textarea class="form-control" id="videoDescription" rows="3" placeholder="Add a description..."></textarea>
                 </div>
+
+                <div class="form-group">
+                    <label>Schedule Date & Time</label>
+                    <input type="datetime-local" class="form-control" id="scheduleTime">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="scheduleVideo()">Schedule Video</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Simulate logged in user
-        console.log('✅ Dashboard loaded');
-        console.log('👤 User: @demo_creator');
-        console.log('🔑 Scopes: user.info.basic, video.upload, video.publish');
-        console.log('📅 Scheduled videos: 12');
-        console.log('🎬 Demo Mode: Sandbox Environment (PRIVATE videos only)');
+        let scheduledVideos = [];
+        let selectedFile = null;
 
-        // Add click handlers to calendar days
-        document.querySelectorAll('.calendar-day.has-video').forEach(day => {
-            day.addEventListener('click', function() {
-                const dayNum = this.querySelector('.day-number').textContent;
-                const count = this.querySelector('.video-count').textContent;
-                alert(`February ${dayNum}\n\n${count} video(s) scheduled for this day\n\nClick to view/edit scheduled videos`);
-            });
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCalendar();
+            loadScheduledVideos();
+            updateStats();
         });
 
-        // Simulate real-time updates
-        console.log('🔄 Auto-publish system: Active');
-        console.log('⏰ Next scheduled post: Feb 5, 2024 at 8:00 AM');
+        function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+
+            // Days headers
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+
+            // Calendar days (Feb 2024)
+            const daysInMonth = 29; // Feb 2024 is a leap year
+            const startDay = 4; // Feb 1, 2024 is Thursday
+
+            // Empty cells before month starts
+            for (let i = 0; i < startDay; i++) {
+                calendar.appendChild(createEmptyDay());
+            }
+
+            // Days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = createDay(day);
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        function createEmptyDay() {
+            const div = document.createElement('div');
+            div.className = 'calendar-day';
+            div.style.visibility = 'hidden';
+            return div;
+        }
+
+        function createDay(day) {
+            const div = document.createElement('div');
+            div.className = 'calendar-day';
+            
+            const dayNumber = document.createElement('div');
+            dayNumber.style.fontWeight = '600';
+            dayNumber.textContent = day;
+            div.appendChild(dayNumber);
+
+            // Check if day has scheduled videos
+            const videosOnDay = scheduledVideos.filter(v => {
+                const vDate = new Date(v.scheduleTime);
+                return vDate.getDate() === day;
+            });
+
+            if (videosOnDay.length > 0) {
+                div.classList.add('has-video');
+                const count = document.createElement('div');
+                count.className = 'video-count';
+                count.textContent = videosOnDay.length;
+                div.appendChild(count);
+            }
+
+            div.onclick = () => showDayVideos(day, videosOnDay);
+            return div;
+        }
+
+        function showDayVideos(day, videos) {
+            if (videos.length > 0) {
+                alert(`February ${day}, 2024\n\n${videos.length} video(s) scheduled:\n\n` + 
+                      videos.map((v, i) => `${i+1}. ${v.title}\n   Time: ${new Date(v.scheduleTime).toLocaleTimeString()}`).join('\n\n'));
+            }
+        }
+
+        function openUploadModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Set default time to tomorrow 10 AM
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(10, 0, 0, 0);
+            document.getElementById('scheduleTime').value = tomorrow.toISOString().slice(0, 16);
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetForm();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                selectedFile = file;
+                const upload = document.getElementById('fileUpload');
+                upload.classList.add('has-file');
+                document.getElementById('fileUploadText').innerHTML = 
+                    `<strong>✓ ${file.name}</strong><br><small>${(file.size / 1024 / 1024).toFixed(2)} MB</small>`;
+                
+                // Auto-fill title if empty
+                if (!document.getElementById('videoTitle').value) {
+                    document.getElementById('videoTitle').value = file.name.replace(/\.[^/.]+$/, "");
+                }
+            }
+        }
+
+        function scheduleVideo() {
+            const title = document.getElementById('videoTitle').value;
+            const description = document.getElementById('videoDescription').value;
+            const scheduleTime = document.getElementById('scheduleTime').value;
+
+            if (!selectedFile) {
+                alert('Please select a video file');
+                return;
+            }
+
+            if (!title) {
+                alert('Please enter a video title');
+                return;
+            }
+
+            if (!scheduleTime) {
+                alert('Please select a schedule time');
+                return;
+            }
+
+            const video = {
+                id: Date.now(),
+                file: selectedFile.name,
+                title: title,
+                description: description,
+                scheduleTime: scheduleTime,
+                status: 'scheduled'
+            };
+
+            scheduledVideos.push(video);
+            saveScheduledVideos();
+            
+            closeUploadModal();
+            renderCalendar();
+            renderVideoList();
+            updateStats();
+            
+            alert(`✅ Video scheduled successfully!\n\nTitle: ${title}\nScheduled for: ${new Date(scheduleTime).toLocaleString()}`);
+        }
+
+        function resetForm() {
+            selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('videoTitle').value = '';
+            document.getElementById('videoDescription').value = '';
+            document.getElementById('fileUpload').classList.remove('has-file');
+            document.getElementById('fileUploadText').innerHTML = '<strong>Click to select video</strong> or drag and drop';
+        }
+
+        function renderVideoList() {
+            const list = document.getElementById('videoList');
+            
+            if (scheduledVideos.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #718096; padding: 40px;">No videos scheduled yet. Click "Upload & Schedule Video" to get started!</p>';
+                return;
+            }
+
+            list.innerHTML = scheduledVideos
+                .sort((a, b) => new Date(a.scheduleTime) - new Date(b.scheduleTime))
+                .map(video => `
+                    <div class="video-item">
+                        <div class="video-thumbnail">🎥</div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-meta">Scheduled: ${new Date(video.scheduleTime).toLocaleString()}</div>
+                        </div>
+                        <div class="video-status status-scheduled">Scheduled</div>
+                    </div>
+                `).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('statScheduled').textContent = scheduledVideos.length;
+        }
+
+        function saveScheduledVideos() {
+            localStorage.setItem('demo_scheduled_videos', JSON.stringify(scheduledVideos));
+        }
+
+        function loadScheduledVideos() {
+            const saved = localStorage.getItem('demo_scheduled_videos');
+            if (saved) {
+                scheduledVideos = JSON.parse(saved);
+            }
+            renderVideoList();
+        }
+
+        // Close modal on outside click
+        document.getElementById('uploadModal').addEventListener('click', function(e) {
+            if (e.target === this) closeUploadModal();
+        });
+
+        // Close modal on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('uploadModal').style.display === 'block') {
+                closeUploadModal();
+            }
+        });
+
+        console.log('🎯 Interactive Dashboard loaded');
+        console.log('📤 Upload videos and schedule publishing times');
     </script>
 </body>
 </html>
