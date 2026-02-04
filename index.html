@@ -92,11 +92,6 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
         
-        .cta-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
         .features {
             padding: 60px 20px;
             background: #f8f9fa;
@@ -219,27 +214,155 @@
             opacity: 0.7;
         }
 
-        .config-notice {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px auto;
-            max-width: 800px;
+        /* Mock TikTok Authorization Page */
+        .mock-auth-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .mock-auth-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .mock-auth-header {
+            background: #000;
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
             text-align: center;
         }
 
-        .config-notice strong {
-            display: block;
+        .mock-auth-logo {
+            font-size: 3rem;
             margin-bottom: 10px;
         }
 
-        .config-notice code {
-            background: #fff;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
+        .mock-auth-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .mock-auth-body {
+            padding: 30px;
+        }
+
+        .mock-auth-app {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mock-auth-app-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .mock-auth-message {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .mock-permission-list {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .mock-permission-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .mock-permission-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .mock-permission-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .mock-permission-content h4 {
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .mock-permission-content p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .mock-auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .mock-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .mock-btn-allow {
+            background: #48bb78;
+            color: white;
+        }
+
+        .mock-btn-allow:hover {
+            background: #38a169;
+        }
+
+        .mock-btn-decline {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .mock-btn-decline:hover {
+            background: #cbd5e0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
         }
         
         @media (max-width: 768px) {
@@ -254,6 +377,10 @@
             .feature-grid,
             .steps {
                 grid-template-columns: 1fr;
+            }
+
+            .mock-auth-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -276,12 +403,7 @@
         <div class="container">
             <h2>Master Your Content Calendar with Precision</h2>
             <p>Schedule, automate, and optimize your TikTok content strategy with powerful calendar-based planning</p>
-            <button class="cta-button" id="getStartedBtn" onclick="loginWithTikTok()">Get Started</button>
-            <div id="configNotice" class="config-notice" style="display: none;">
-                <strong>⚠️ Configuration Required</strong>
-                <p>Please configure your TikTok Client Key in the code before using the login feature.</p>
-                <p>Edit <code>TIKTOK_CLIENT_KEY</code> in the page source.</p>
-            </div>
+            <button class="cta-button" id="getStartedBtn" onclick="showMockAuth()">Get Started</button>
         </div>
     </section>
 
@@ -358,133 +480,128 @@
                 <a href="privacy-policy.html">Privacy Policy</a>
             </div>
             <p>&copy; 2024 ClipScheduler. All rights reserved.</p>
-            <p>Contact: ddd350682@gmail.com</p>
+            <p>Contact: support@clipschedulerpolicies.com</p>
         </div>
     </footer>
 
+    <!-- Mock TikTok Authorization Page -->
+    <div id="mockAuthOverlay" class="mock-auth-overlay">
+        <div class="mock-auth-container">
+            <div class="mock-auth-header">
+                <div class="mock-auth-logo">🎵</div>
+                <div class="mock-auth-title">TikTok</div>
+            </div>
+            <div class="mock-auth-body">
+                <div class="mock-auth-app">
+                    <div class="mock-auth-app-name">ClipScheduler</div>
+                    <div class="mock-auth-message">wants to access your TikTok account</div>
+                </div>
+
+                <div class="mock-permission-list">
+                    <h3 style="margin-bottom: 20px; color: #2d3748;">This app will be able to:</h3>
+                    
+                    <div class="mock-permission-item">
+                        <div class="mock-permission-icon">👤</div>
+                        <div class="mock-permission-content">
+                            <h4>user.info.basic</h4>
+                            <p>View your profile information and display name</p>
+                        </div>
+                    </div>
+
+                    <div class="mock-permission-item">
+                        <div class="mock-permission-icon">📤</div>
+                        <div class="mock-permission-content">
+                            <h4>video.upload</h4>
+                            <p>Upload videos to your TikTok account</p>
+                        </div>
+                    </div>
+
+                    <div class="mock-permission-item">
+                        <div class="mock-permission-icon">📅</div>
+                        <div class="mock-permission-content">
+                            <h4>video.publish</h4>
+                            <p>Publish videos to your TikTok account at scheduled times</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mock-auth-buttons">
+                    <button class="mock-btn mock-btn-decline" onclick="hideMockAuth()">Decline</button>
+                    <button class="mock-btn mock-btn-allow" onclick="allowAuth()">Allow</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // ⚠️ IMPORTANT: Configure your TikTok Client Key here
-        // Get this from: https://developers.tiktok.com/
-        const TIKTOK_CLIENT_KEY = 'YOUR_CLIENT_KEY_HERE';  // 👈 Replace with your actual Client Key
-        
-        // Redirect URI - must match exactly what you configured in TikTok Developer Portal
-        const REDIRECT_URI = 'https://this-ZZHXD.github.io/clipscheduler-policies/callback.html';
-        
-        // Scopes - permissions we're requesting
-        const SCOPES = 'user.info.basic,video.upload,video.publish';
+        console.log('🎬 ClipScheduler Demo Mode - Mock OAuth Flow');
+        console.log('📋 This version simulates the TikTok OAuth flow for demo recording');
 
         /**
-         * Initiate TikTok OAuth login flow
+         * Show mock TikTok authorization page
          */
-        function loginWithTikTok() {
-            // Check if Client Key is configured
-            if (TIKTOK_CLIENT_KEY === 'YOUR_CLIENT_KEY_HERE') {
-                // Show configuration notice
-                const notice = document.getElementById('configNotice');
-                notice.style.display = 'block';
-                
-                // Scroll to notice
-                notice.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                console.error('❌ TikTok Client Key not configured!');
-                console.log('📝 Please follow these steps:');
-                console.log('1. Get your Client Key from TikTok Developer Portal');
-                console.log('2. Replace TIKTOK_CLIENT_KEY value in this file');
-                console.log('3. Upload the updated file to GitHub');
-                
-                return;
-            }
-
-            console.log('🚀 Initiating TikTok OAuth flow...');
+        function showMockAuth() {
+            console.log('🚀 Opening mock TikTok authorization page...');
+            const overlay = document.getElementById('mockAuthOverlay');
+            overlay.style.display = 'block';
             
-            // Generate random state for CSRF protection
-            const state = generateRandomState();
-            
-            // Save state to sessionStorage for verification in callback
-            sessionStorage.setItem('tiktok_oauth_state', state);
-            
-            // Build TikTok authorization URL
-            const authUrl = 'https://www.tiktok.com/v2/auth/authorize/' +
-                '?client_key=' + encodeURIComponent(TIKTOK_CLIENT_KEY) +
-                '&scope=' + encodeURIComponent(SCOPES) +
-                '&response_type=code' +
-                '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
-                '&state=' + encodeURIComponent(state);
-            
-            console.log('✅ Redirecting to TikTok authorization page...');
-            console.log('📍 Redirect URI:', REDIRECT_URI);
-            console.log('🔑 Scopes:', SCOPES);
-            
-            // Redirect to TikTok
-            window.location.href = authUrl;
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
         }
 
         /**
-         * Generate random state string for CSRF protection
-         * @returns {string} Random state string
+         * Hide mock authorization page
          */
-        function generateRandomState() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let state = '';
-            for (let i = 0; i < 32; i++) {
-                state += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return state;
+        function hideMockAuth() {
+            console.log('❌ User declined authorization');
+            const overlay = document.getElementById('mockAuthOverlay');
+            overlay.style.display = 'none';
+            
+            // Restore body scrolling
+            document.body.style.overflow = 'auto';
         }
 
         /**
-         * Check if user is already logged in
+         * Simulate authorization approval and redirect to callback
          */
-        function checkLoginStatus() {
-            const accessToken = localStorage.getItem('tiktok_access_token');
-            const userInfo = localStorage.getItem('tiktok_user_info');
+        function allowAuth() {
+            console.log('✅ User approved authorization');
+            console.log('🔄 Redirecting to callback page...');
             
-            if (accessToken && userInfo) {
-                console.log('✅ User is logged in');
-                const user = JSON.parse(userInfo);
-                console.log('👤 User:', user.display_name || user.username);
-                
-                // Update button text
-                const btn = document.getElementById('getStartedBtn');
-                if (btn) {
-                    btn.textContent = 'Open Dashboard';
-                    btn.onclick = function() {
-                        alert('Dashboard feature coming soon! For now, you can:\n\n' +
-                              '1. View your profile: ' + (user.display_name || user.username) + '\n' +
-                              '2. Access token is stored securely\n' +
-                              '3. Ready for video scheduling features');
-                    };
+            // Hide the overlay
+            const overlay = document.getElementById('mockAuthOverlay');
+            overlay.style.display = 'none';
+            
+            // Simulate redirect to callback page with mock parameters
+            const mockCode = 'demo_authorization_code_' + Date.now();
+            const mockState = 'demo_state_token_12345';
+            const mockScopes = 'user.info.basic,video.upload,video.publish';
+            
+            // Redirect to callback page with demo parameters
+            window.location.href = `callback.html?code=${mockCode}&state=${mockState}&scopes=${mockScopes}`;
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('mockAuthOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideMockAuth();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const overlay = document.getElementById('mockAuthOverlay');
+                if (overlay.style.display === 'block') {
+                    hideMockAuth();
                 }
             }
-        }
+        });
 
-        // Page load initialization
+        // Page load
         window.addEventListener('DOMContentLoaded', function() {
-            console.log('🎯 ClipScheduler initialized');
-            console.log('📋 Configuration:');
-            console.log('  Client Key:', TIKTOK_CLIENT_KEY === 'YOUR_CLIENT_KEY_HERE' ? '⚠️ Not configured' : '✅ Configured');
-            console.log('  Redirect URI:', REDIRECT_URI);
-            console.log('  Scopes:', SCOPES);
-            
-            // Check if user is already logged in
-            checkLoginStatus();
-            
-            // Check for error parameter (redirected back with error)
-            const urlParams = new URLSearchParams(window.location.search);
-            const error = urlParams.get('error');
-            const errorDescription = urlParams.get('error_description');
-            
-            if (error) {
-                console.error('❌ OAuth Error:', error);
-                if (errorDescription) {
-                    console.error('📝 Description:', errorDescription);
-                }
-                
-                alert('Login failed: ' + (errorDescription || error) + '\n\nPlease try again or contact support.');
-                
-                // Clean URL
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
+            console.log('🎯 Demo mode initialized');
+            console.log('📝 Click "Get Started" to see simulated OAuth flow');
         });
     </script>
 </body>
