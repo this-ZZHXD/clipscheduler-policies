@@ -1,20 +1,5 @@
 # ClipScheduler OAuth Login Integration 🔐
 
-## 📦 Package Contents
-
-This folder contains the complete OAuth login functionality:
-
-```
-clipscheduler_oauth_files/
-├── index.html                  - Main page with OAuth login
-├── callback.html               - OAuth callback handler
-├── OAuth功能使用说明.md        - Detailed configuration guide (Chinese)
-├── 快速配置清单.md             - Quick start guide (Chinese)
-└── README.md                   - This file
-```
-
----
-
 ## 🚀 Quick Start (3 Minutes)
 
 ### Step 1: Get Your Client Key
